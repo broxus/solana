@@ -326,8 +326,8 @@ impl EpochSlots {
         let now = crds_value::new_rand_timestamp(rng);
         let pubkey = pubkey.unwrap_or_else(solana_sdk::pubkey::new_rand);
         let mut epoch_slots = Self::new(pubkey, now);
-        let num_slots = rng.gen_range(0, 20);
-        let slots: Vec<_> = std::iter::repeat_with(|| 47825632 + rng.gen_range(0, 512))
+        let num_slots = rng.gen_range(0..20);
+        let slots: Vec<_> = std::iter::repeat_with(|| 47825632 + rng.gen_range(0..512))
             .take(num_slots)
             .collect();
         epoch_slots.add(&slots);
