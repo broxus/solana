@@ -272,7 +272,7 @@ impl CrdsGossipPull {
         let mut filters = self.build_crds_filters(thread_pool, crds, bloom_size);
         if filters.len() > MAX_NUM_PULL_REQUESTS {
             for i in 0..MAX_NUM_PULL_REQUESTS {
-                let j = rng.gen_range(i, filters.len());
+                let j = rng.gen_range(i..filters.len());
                 filters.swap(i, j);
             }
             filters.truncate(MAX_NUM_PULL_REQUESTS);
@@ -456,7 +456,7 @@ impl CrdsGossipPull {
         stats: &GossipStats,
     ) -> Vec<Vec<CrdsValue>> {
         let msg_timeout = CRDS_GOSSIP_PULL_CRDS_TIMEOUT_MS;
-        let jitter = rand::thread_rng().gen_range(0, msg_timeout / 4);
+        let jitter = rand::thread_rng().gen_range(0..msg_timeout / 4);
         //skip filters from callers that are too old
         let caller_wallclock_window =
             now.saturating_sub(msg_timeout)..now.saturating_add(msg_timeout);
